@@ -9,8 +9,18 @@ function getComputerPlay() {
   return gameArray[randomNumber]; //return the array.indexOf(random)
 }
 
-console.log(getComputerPlay());
+//get user play
+function getUserPlay() {
+  gameArray = ["rock", "paper", "scissors"];
+  let userPlay = prompt("What's your play? Rock paper or scissors?"); //prompt the user for the play
+  userPlay = userPlay.toLowerCase(); //lowercase the string
+  //check for null or wrong inputs
+  if (userPlay === null || gameArray.indexOf(userPlay) < 0) {
+    alert("Wrong or empty input");
+    return;
+  }
+  return userPlay; //return the play
+}
 
-//get player play
-
+console.log(getUserPlay());
 //compare plays
