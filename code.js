@@ -24,40 +24,81 @@ function printPlays(userPlay, computerPlay) {
   console.log(`The computer play is ${computerPlay}`);
 }
 
-//compare plays
+//play one round, check the results and returns an object
 function playRound(userPlay, computerPlay) {
-  let win = false;
-  printPlays(userPlay, computerPlay);
+  let results = {
+    message: null,
+    win: null, //boolean, if it's a tie win stays null
+  };
 
   //check if they user and computer play are the same ---> it's a tie!
   if (userPlay === computerPlay) {
-    return "It's a tie!";
+    results.message = "It's a tie!";
+    return results;
   }
   //check if the user wins
   switch (userPlay) {
     case "paper":
       if (computerPlay === "rock") {
-        win = true;
+        results.win = true;
       }
       break;
     case "rock":
       if (computerPlay === "scissors") {
-        win = true;
+        results.win = true;
       }
       break;
     case "scissors":
       if (computerPlay === "paper") {
-        win = true;
+        results.win = true;
       }
       break;
   }
 
-  //return the results
-  if (win) {
-    return "You win!";
+  //assign the result message
+  if (results.win) {
+    results.message = `You win, ${userPlay} beats ${computerPlay}`;
   } else {
-    return "You lose!";
+    results.message = `You lose, ${computerPlay} beats ${userPlay}`;
+  }
+
+  return results;
+}
+
+//play a best of 5 game
+function game() {
+  let userScore = 0;
+  let computerScore = 0;
+  let userPlay;
+  let computerPlay;
+  let results;
+
+  //loop until one of the scores hit 5
+  while (userScore < 5 && computerScore < 5) {
+    userPlay = getUserPlay(); //get the user play
+    computerPlay = getComputerPlay(); //get the computer play
+    results = playRound(userPlay, computerPlay); //play one round
+    printPlays(userPlay, computerPlay); //print plays
+    console.log(results.message); //print the round results
+    console.log(""); //new line for better readability
+
+    //increase the winner counter
+    switch (results.win) {
+      case null: //tie, no need to increase
+        break;
+      case true:
+        userScore++;
+      case false:
+        computerScore++;
+    }
+  }
+
+  //print the game results
+  if (userScore > computerScore) {
+    console.log("You won the game!");
+  } else {
+    console.log("You lost the game!");
   }
 }
 
-console.log(playRound(getUserPlay(), getComputerPlay()));
+game();
