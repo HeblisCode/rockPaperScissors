@@ -1,8 +1,4 @@
-//save plays
-let computerPlay;
-let playerPlay;
-
-//randomly generated play
+//get a randomly generated play
 function getComputerPlay() {
   let gameArray = ["rock", "paper", "scissors"]; //array with rock paper scissor
   let randomNumber = Math.floor(Math.random() * gameArray.length); //extract a random number between 0 and 2
@@ -22,5 +18,46 @@ function getUserPlay() {
   return userPlay; //return the play
 }
 
-console.log(getUserPlay());
+//print plays
+function printPlays(userPlay, computerPlay) {
+  console.log(`Your play is ${userPlay}`);
+  console.log(`The computer play is ${computerPlay}`);
+}
+
 //compare plays
+function playRound(userPlay, computerPlay) {
+  let win = false;
+  printPlays(userPlay, computerPlay);
+
+  //check if they user and computer play are the same ---> it's a tie!
+  if (userPlay === computerPlay) {
+    return "It's a tie!";
+  }
+  //check if the user wins
+  switch (userPlay) {
+    case "paper":
+      if (computerPlay === "rock") {
+        win = true;
+      }
+      break;
+    case "rock":
+      if (computerPlay === "scissors") {
+        win = true;
+      }
+      break;
+    case "scissors":
+      if (computerPlay === "paper") {
+        win = true;
+      }
+      break;
+  }
+
+  //return the results
+  if (win) {
+    return "You win!";
+  } else {
+    return "You lose!";
+  }
+}
+
+console.log(playRound(getUserPlay(), getComputerPlay()));
