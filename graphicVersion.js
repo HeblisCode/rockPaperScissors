@@ -67,6 +67,52 @@ function playRound(userPlay, computerPlay) {
   return results;
 }
 
+function updateScoreView(results) {
+  let winner;
+  let winnerScore;
+  if (results.win) {
+    winner = "user";
+    winnerScore = getScore().user;
+  } else {
+    winner = "computer";
+    winnerScore = getScore().computer;
+  }
+  const winDot = document.querySelector(
+    `#${winner} > .winCounter > .win${winnerScore}`
+  );
+  winDot.classList.add("winTrue");
+}
+
+function gameOver() {
+  let winner;
+  if (getScore().user > getScore().computer) {
+    winner = "User";
+  } else {
+    winner = "Computer";
+  }
+
+  //removes everything from the game container
+  const gameContainer = document.querySelector("#gameContainer");
+  gameContainer.innerHTML = "";
+
+  //creates a game over message and a button to reset the game
+  const gameOverMessage = document.createElement("p");
+  const playAgainButton = document.createElement("button");
+
+  //set all the attributes
+  gameOverMessage.innerHTML = `Game Over<br>${winner} won`;
+  playAgainButton.id = "playAgainButton";
+  playAgainButton.innerText = "Play Again";
+  playAgainButton.addEventListener(
+    "click",
+    window.location.reload.bind(window.location)
+  );
+
+  //append them to the container
+  gameContainer.appendChild(gameOverMessage);
+  gameContainer.appendChild(playAgainButton);
+}
+
 //event listener for the buttons
 const buttons = document.querySelectorAll("button");
 buttons.forEach((button) =>
@@ -74,43 +120,10 @@ buttons.forEach((button) =>
 );
 function handleButtonClick(e) {
   const results = playRound(e.target.id, getComputerPlay());
-  console.log(results);
   getScore = updateScore(results);
-  console.log(getScore());
-}
-
-//play a best of 5 game
-function game() {
-  let userScore = 0;
-  let computerScore = 0;
-  let userPlay;
-  let computerPlay;
-  let results;
-
-  //loop until one of the scores hit 5
-  while (userScore < 5 && computerScore < 5) {
-    userPlay = getUserPlay(); //get the user play
-    computerPlay = getComputerPlay(); //get the computer play
-    results = playRound(userPlay, computerPlay); //play one round
-    printPlays(userPlay, computerPlay); //print plays
-    console.log(results.message); //print the round results
-    console.log(""); //new line for better readability
-
-    //increase the winner counter
-    switch (results.win) {
-      case null: //tie, no need to increase
-        break;
-      case true:
-        userScore++;
-      case false:
-        computerScore++;
-    }
-  }
-
-  //print the game results
-  if (userScore > computerScore) {
-    console.log("You won the game!");
-  } else {
-    console.log("You lost the game!");
+  if (results.win === null) return; //return if the game is a tie
+  updateScoreView(results);
+  if (getScore().computer === 5 || getScore().user === 5) {
+    gameOver();
   }
 }

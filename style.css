@@ -4,3 +4,16 @@ button {
 button > img {
   width: 50%;
 }
+#winCounter {
+  width: 100px;
+  height: 100px;
+  background: black;
+}
+.win-dot {
+  width: 10px;
+  height: 10px;
+  background: tomato;
+}
+.winTrue {
+  background-color: blue;
+}
