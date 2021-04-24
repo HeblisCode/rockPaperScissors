@@ -26,8 +26,8 @@ function getComputerPlay() {
 //play one round, check the results and returns an object
 function playRound(userPlay, computerPlay) {
   let results = {
-    computerPlayed: computerPlay,
     userPlayed: userPlay,
+    computerPlayed: computerPlay,
     message: null,
     win: null, //boolean, if it's a tie win stays null
   };
@@ -83,6 +83,36 @@ function updateScoreView(results) {
   winDot.classList.add("winTrue");
 }
 
+function updateScreenView(play, win, screen) {
+  switch (play) {
+    case "rock":
+      screen.innerText = "sports_soccer";
+      break;
+    case "paper":
+      screen.innerText = "description";
+      break;
+    case "scissors":
+      screen.innerText = "content_cut";
+      break;
+  }
+  if (win) {
+    screen.classList.add("win");
+  } else {
+    screen.classList.add("lose");
+  }
+}
+
+function updateView(results) {
+  let userScreen = document.querySelector("#user > .screen > .material-icons");
+  let computerScreen = document.querySelector(
+    "#computer > .screen > .material-icons"
+  );
+  updateScreenView(results.userPlayed, results.win, userScreen);
+  updateScreenView(results.computerPlayed, results.win, computerScreen);
+  if (results.win === null) return; //return if the game is a tie
+  updateScoreView(results);
+}
+
 function gameOver() {
   let winner;
   if (getScore().user > getScore().computer) {
@@ -121,8 +151,8 @@ buttons.forEach((button) =>
 function handleButtonClick(e) {
   const results = playRound(e.target.id, getComputerPlay());
   getScore = updateScore(results);
-  if (results.win === null) return; //return if the game is a tie
-  updateScoreView(results);
+  updateView(results);
+  console.log(results);
   if (getScore().computer === 5 || getScore().user === 5) {
     gameOver();
   }

@@ -6,16 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rock Paper Scissors</title>
     <script src="graphicVersion.js" defer></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <div id="gameContainer">
+    <div id="gameContainer" class="center">
       <div id="user" class="display">
         <div class="playerName">
-          <p>Placeholder</p>
+          <p>Player</p>
         </div>
         <div class="screen">
-          <img src="images/rock.png" alt="" />
+          <span class="material-icons center"> </span>
         </div>
         <div class="winCounter">
           <div class="win1 win-dot"></div>
@@ -28,10 +37,10 @@
 
       <div id="computer" class="display">
         <div class="playerName">
-          <p>Placeholder</p>
+          <p>Computer</p>
         </div>
         <div class="screen">
-          <img src="images/rock.png" alt="" />
+          <span class="material-icons center"> </span>
         </div>
         <div class="winCounter">
           <div class="win1 win-dot"></div>
@@ -43,15 +52,9 @@
       </div>
 
       <div id="buttonsContainer">
-        <button id="rock">
-          <img src="images/rock.png" alt="" />
-        </button>
-        <button id="paper">
-          <img src="images/paper.png" alt="" />
-        </button>
-        <button id="scissors">
-          <img src="images/scissors.png" alt="" />
-        </div>
+        <button id="rock"></button>
+        <button id="paper"></button>
+        <button id="scissors"></button>
       </div>
     </div>
   </body>
