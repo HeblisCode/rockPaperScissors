@@ -28,13 +28,11 @@ function playRound(userPlay, computerPlay) {
   let results = {
     userPlayed: userPlay,
     computerPlayed: computerPlay,
-    message: null,
     win: null, //boolean, if it's a tie win stays null
   };
 
   //check if they user and computer play are the same ---> it's a tie!
   if (userPlay === computerPlay) {
-    results.message = "It's a tie!";
     return results;
   }
   //check if the user wins
@@ -56,14 +54,9 @@ function playRound(userPlay, computerPlay) {
       break;
   }
 
-  //assign the result message
-  if (results.win) {
-    results.message = `You win, ${userPlay} beats ${computerPlay}`;
-  } else {
-    results.message = `You lose, ${computerPlay} beats ${userPlay}`;
+  if (!results.win) {
     results.win = false;
   }
-
   return results;
 }
 
@@ -83,33 +76,66 @@ function updateScoreView(results) {
   winDot.classList.add("winTrue");
 }
 
-function updateScreenView(play, win, screen) {
-  switch (play) {
-    case "rock":
-      screen.innerText = "sports_soccer";
-      break;
-    case "paper":
-      screen.innerText = "description";
-      break;
-    case "scissors":
-      screen.innerText = "content_cut";
-      break;
-  }
-  if (win) {
-    screen.classList.add("win");
-  } else {
-    screen.classList.add("lose");
-  }
-}
-
-function updateView(results) {
+function updateScreenView(results) {
+  let playsArray = [results.userPlayed, results.computerPlayed];
   let userScreen = document.querySelector("#user > .screen > .material-icons");
   let computerScreen = document.querySelector(
     "#computer > .screen > .material-icons"
   );
-  updateScreenView(results.userPlayed, results.win, userScreen);
-  updateScreenView(results.computerPlayed, results.win, computerScreen);
+  let screensArray = [userScreen, computerScreen];
+
+  for (let i = 0; i < playsArray.length; i++) {
+    switch (playsArray[i]) {
+      case "rock":
+        screensArray[i].innerText = "sports_soccer";
+        break;
+      case "paper":
+        screensArray[i].innerText = "description";
+        break;
+      case "scissors":
+        screensArray[i].innerText = "content_cut";
+        break;
+    }
+  }
+}
+
+function updateScreenColor(results) {
+  let winner;
+  let loser;
+  if (results.win) {
+    winner = "user";
+    loser = "computer";
+  } else {
+    winner = "computer";
+    loser = "user";
+  }
+
+  let winnerScreen = document.querySelector(
+    `#${winner} > .screen > .material-icons`
+  );
+  let loserScreen = document.querySelector(
+    `#${loser} > .screen > .material-icons`
+  );
+
+  winnerScreen.classList.add("win");
+  loserScreen.classList.add("lose");
+}
+
+function resetScreenColor() {
+  let userScreen = document.querySelector("#user > .screen > .material-icons");
+  let computerScreen = document.querySelector(
+    "#computer > .screen > .material-icons"
+  );
+
+  userScreen.classList.remove("win", "lose");
+  computerScreen.classList.remove("win", "lose");
+}
+
+function updateView(results) {
+  updateScreenView(results);
+  resetScreenColor();
   if (results.win === null) return; //return if the game is a tie
+  updateScreenColor(results);
   updateScoreView(results);
 }
 
@@ -128,9 +154,11 @@ function gameOver() {
   //creates a game over message and a button to reset the game
   const gameOverMessage = document.createElement("p");
   const playAgainButton = document.createElement("button");
+  gameOverMessage.classList.add("gameOver");
+  playAgainButton.classList.add("gameOver");
 
   //set all the attributes
-  gameOverMessage.innerHTML = `Game Over<br>${winner} won`;
+  gameOverMessage.innerHTML = `Game Over<br>${winner} wins!`;
   playAgainButton.id = "playAgainButton";
   playAgainButton.innerText = "Play Again";
   playAgainButton.addEventListener(
@@ -152,7 +180,6 @@ function handleButtonClick(e) {
   const results = playRound(e.target.id, getComputerPlay());
   getScore = updateScore(results);
   updateView(results);
-  console.log(results);
   if (getScore().computer === 5 || getScore().user === 5) {
     gameOver();
   }
