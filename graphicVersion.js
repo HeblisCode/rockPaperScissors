@@ -9,7 +9,7 @@ function getScore() {
 function updateScore(results) {
   let score = getScore();
   if (results.win === null) return getScore;
-  results.win && results.win !== null ? score.user++ : score.computer++;
+  results.win ? score.user++ : score.computer++;
   getScore = function () {
     return score;
   };
@@ -172,7 +172,7 @@ function gameOver() {
 }
 
 //event listener for the buttons
-const buttons = document.querySelectorAll("button");
+const buttons = document.querySelectorAll("#buttonsContainer > span");
 buttons.forEach((button) =>
   button.addEventListener("click", handleButtonClick)
 );
